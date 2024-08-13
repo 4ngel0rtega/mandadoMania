@@ -1,8 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { RadioButton } from "react-native-paper";
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import uuid from 'react-native-uuid';
@@ -21,23 +19,28 @@ function AddProduct({navigation}) {
     
         const newProduct = {
             id: uuid.v4(),
-            nombre,
-            precio,
-            lugar: lugar || null,
+            name: name,
+            price: price,
+            palce: place || null,
         };
 
         try {
-            const productos = await AsyncStorage.getItem('productos');
-            const productosArray = productos ? JSON.parse(productos) : [];
-            productosArray.push(nuevoProducto);
-            await AsyncStorage.setItem('productos', JSON.stringify(productosArray));
-            Alert.alert('Éxito', 'Producto guardado correctamente.');
-            setName('');
-            setPrice('');
-            setPlace('');
+            const existingList = await AsyncStorage.getItem("productList");
+            let newList = [];
+
+            if (existingList !== null && existingList !== '') {
+                // Si la lista existe y no está vacía, parsearla
+                newList = JSON.parse(existingList);
+            }
+
+            newList.push(newProduct);
+
+            await AsyncStorage.setItem("productList", JSON.stringify(newList));
+            Alert.alert("Producto Añadido","El producto fue añadido correctamente");
+
+            navigation.navigate("Home")
         } catch (error) {
-            console.error(error);
-            Alert.alert('Error', 'Hubo un problema al guardar el producto.');
+            console.log("Error al añadir el producto", error)
         }
     }
     
