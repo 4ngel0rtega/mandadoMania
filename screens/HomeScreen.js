@@ -1,8 +1,8 @@
 import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Navbar from "../components/navbar";
-import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Divider, FAB, Modal } from "react-native-paper";
+import { useCallback, useState } from "react";
+import { ActivityIndicator, Divider, Modal } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
@@ -11,9 +11,9 @@ import { useFocusEffect } from "@react-navigation/native";
 function Home({ navigation }) {
     const [listProducts, setListProducts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [totalPrice, setTotalPrice] = useState(0);
 
     const [currentProduct, setCurrentProduct] = useState(null);
+
 
     const [visibleEdit, setVisibleEdit] = useState(false);
     const showModalEdit = (product) => {
@@ -45,12 +45,6 @@ function Home({ navigation }) {
             setListProducts(updatedList);
             await AsyncStorage.setItem('productList', JSON.stringify(updatedList));
             
-            const total = updatedList.reduce((sum, product) => {
-                return sum + parseFloat(product.price);
-            }, 0);
-
-            setTotalPrice(total)
-            
             hideModalEdit();
         } catch (error) {
             console.error('Error saving product changes', error);
@@ -78,6 +72,26 @@ function Home({ navigation }) {
         }
     };
 
+    const confirmDeleteList = (product) => {
+        Alert.alert(
+            'Eliminar Lista',
+            `¿Estás seguro de que quieres eliminar toda la lista?`,
+            [
+                { text: 'Cancelar', style: 'cancel' },
+                { text: 'Eliminar', onPress: () => deleteList() }
+            ]
+        );
+    };
+
+    const deleteList = async () => {
+        try {
+            await AsyncStorage.removeItem('productList');
+            setListProducts([])
+        } catch (error) {
+            Alert.alert("Error", "Ups! Surgio un error al eliminar la lista, intentelo nuevamente")
+            console.error("Error: " + error)
+        }
+    }
 
     const loadProducts = async () => {
         try {
@@ -86,12 +100,6 @@ function Home({ navigation }) {
               const parsedProducts = JSON.parse(storedProducts);
               setListProducts(parsedProducts);
       
-              // Calcular el precio total
-              const total = parsedProducts.reduce((sum, product) => {
-                return sum + parseFloat(product.price);
-              }, 0);
-      
-              setTotalPrice(total);
             }
           } catch (error) {
             console.error('Error loading products', error);
@@ -105,6 +113,7 @@ function Home({ navigation }) {
         // Se ejecuta cada vez que la pantalla se enfoca
         loadProducts();
         }, [])
+
     );
 
     const renderEmptyListMessage = () => (
@@ -120,7 +129,7 @@ function Home({ navigation }) {
     
           <TouchableOpacity
             onPress={() => navigation.navigate('AddProduct')}
-            style={{ margin: 10, padding: 10, backgroundColor: '#e59c1b', borderRadius: 10 }}
+            style={{ margin: 10, padding: 10, backgroundColor: '#ECA956', borderRadius: 10 }}
           >
             <Text style={{ color: '#fff', fontSize: 16, textAlign: 'center' }}>Añadir Producto</Text>
           </TouchableOpacity>
@@ -136,14 +145,14 @@ function Home({ navigation }) {
                     <View style={{padding: 5}}>
                         <View style={{padding: 10, borderRadius: 10, backgroundColor: "#e2e2e2", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                             <View>
-                                <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.palce ? item.palce : "Sin Lugar"}</Text></Text>
+                                <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.place ? item.place : "Sin Lugar"}</Text></Text>
                                 <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
-                                <TouchableOpacity onPress={() => showModalEdit(item)} style={{backgroundColor: "#318dd7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                <TouchableOpacity onPress={() => showModalEdit(item)} style={{backgroundColor: "#4FBCD7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
                                     <Ionicons name="pencil" color={"#fff"} size={20}/>
                                 </TouchableOpacity>
-                                <TouchableOpacity    onPress={() => confirmDeleteProduct(item)} style={{backgroundColor: "#d73131", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                <TouchableOpacity    onPress={() => confirmDeleteProduct(item)} style={{backgroundColor: "#F16767", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
                                     <Ionicons name="close" color={"#fff"} size={20}/>
                                 </TouchableOpacity>
                             </View>
@@ -157,9 +166,12 @@ function Home({ navigation }) {
             <Divider bold/>
 
             <View style={{padding: 10, flexDirection: "row", justifyContent: "space-between"}}>
-                <Text style={{fontSize: 24}}>Total: <Text style={{fontSize: 28}}>${totalPrice}</Text></Text>
-                <TouchableOpacity style={{backgroundColor: "#4ac603", padding: 10, borderRadius: 10}}>
-                    <Text style={{fontSize: 12, color: "#fff"}}>Detalles</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Details")} style={{backgroundColor: "#A2C15C", padding: 10, borderRadius: 10}}>
+                    <Text style={{fontSize: 16, color: "#fff"}}>Realizar Compra</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => confirmDeleteList()} style={{backgroundColor: "#C73A35", padding: 10, borderRadius: 10}}>
+                    <Ionicons name="trash" size={20} color={"#fff"}/>
                 </TouchableOpacity>
             </View>
 
@@ -199,8 +211,8 @@ function Home({ navigation }) {
                             <Text style={styles.label}>Lugar de compra</Text>
                             <TextInput
                             style={styles.input}
-                            value={currentProduct?.palce}
-                            onChangeText={(value) => handleEditChange('palce', value)}
+                            value={currentProduct?.place}
+                            onChangeText={(value) => handleEditChange('place', value)}
                             placeholder="Lugar de compra"
                             />
                         </View>

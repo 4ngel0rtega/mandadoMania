@@ -21,7 +21,7 @@ function AddProduct({navigation}) {
             id: uuid.v4(),
             name: name,
             price: price,
-            palce: place || null,
+            place: place || null,
         };
 
         try {
@@ -51,11 +51,11 @@ function AddProduct({navigation}) {
                     <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                         <Ionicons size={25} color={"#000"} name="arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 18, textAlign: "center", width: "90%"}}>Agregar Producto</Text>
+                    <Text style={{fontSize: 18, textAlign: "center", width: "90%", color: "#fff"}}>Agregar Producto</Text>
                 </View>
 
                 <View style={{padding: "2%", alignItems: "center"}}>
-                    <Text style={{textAlign: "center", fontSize: 16, width: "80%"}}>
+                    <Text style={{textAlign: "center", fontSize: 16, width: "80%", color: "#fff"}}>
                         En esta pantalla ingresa los datos solicitados para agregar el producto a la lista del mandado
                     </Text>
                 </View>
@@ -99,7 +99,7 @@ export default AddProduct;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ffc44b"
+        backgroundColor: "#ECA956"
     },
     
     inputContainer: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
 
     button: {
         padding: "3%",
-        backgroundColor: "#3eb6ff",
+        backgroundColor: "#4FBCD7",
         borderRadius: 10
     },
 
