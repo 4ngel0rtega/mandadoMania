@@ -1,17 +1,16 @@
-import { useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ProductsContext } from "../context/ProductsContext";
+import { Ionicons } from '@expo/vector-icons';
+import { useContext, useState } from "react";
+import { ServicesContext } from "../context/ServicesContext";
 
-function AddProduct({navigation}) {
+function AddService({navigation}) {
 
-    const { addProduct } = useContext(ProductsContext)
+    const { addService } = useContext(ServicesContext)
     const [ name, setName ] = useState("");
     const [ price, setPrice ] = useState("");
     const [ place, setPlace ] = useState("");
 
-    
     return (
         <SafeAreaView style={styles.container}>
             <View style={{marginBottom: 5}}>
@@ -19,39 +18,39 @@ function AddProduct({navigation}) {
                     <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                         <Ionicons size={25} color={"#000"} name="arrow-back"/>
                     </TouchableOpacity>
-                    <Text style={{fontSize: 18, textAlign: "center", width: "90%", color: "#fff"}}>Agregar Producto</Text>
+                    <Text style={{fontSize: 18, textAlign: "center", width: "90%", color: "#fff"}}>Agregar Servicio</Text>
                 </View>
 
                 <View style={{padding: "2%", alignItems: "center"}}>
                     <Text style={{textAlign: "center", fontSize: 16, width: "80%", color: "#fff"}}>
-                        En esta pantalla ingresa los datos solicitados para agregar el producto a la lista del mandado
+                        En esta pantalla ingresa los datos solicitados para agregar el servcio a la lista
                     </Text>
                 </View>
             </View>
 
             <View style={{flex: 1, backgroundColor: "#fff", borderTopLeftRadius: 50, borderTopRightRadius: 50, padding: "2%"}}>
-                <Text style={{fontSize: 20, textAlign: "center"}}>Descripción del Producto</Text>
+                <Text style={{fontSize: 20, textAlign: "center"}}>Descripción del Servicio</Text>
 
                 <View style={{justifyContent: "center", padding: "3%", marginVertical: 10}}>
                     <View style={{height: "100%", gap: 20}}>
                         <View>
                             <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Nombre del Producto<Text style={styles.inputRequired}>*</Text></Text>
-                                <TextInput onChangeText={(value) => setName(value)} style={styles.input} placeholder="Manzana, Naranja, Pan, etc."/>
+                                <Text style={styles.label}>Nombre del Servicio<Text style={styles.inputRequired}>*</Text></Text>
+                                <TextInput onChangeText={(value) => setName(value)} style={styles.input} placeholder="Luz, Agua, Gas, Internet, etc."/>
                             </View>
 
                             <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Precio del Producto<Text style={styles.inputRequired}>*</Text></Text>
-                                <TextInput onChangeText={(value) => setPrice(value)} keyboardType="decimal-pad" style={styles.input} placeholder="20, 10, 19.55, etc."/>
+                                <Text style={styles.label}>Precio del Servicio<Text style={styles.inputRequired}>*</Text></Text>
+                                <TextInput onChangeText={(value) => setPrice(value)} vkeyboardType="numeric" style={styles.input} placeholder="150, 350, 650, etc."/>
                             </View>
 
                             <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Lugar de compra <Text style={{color: "#aaa"}}>(opcional)</Text></Text>
-                                <TextInput onChangeText={(value) => setPlace(value)} style={styles.input} placeholder="Alsuper, Walmart, Costco, etc."/>
+                                <Text style={styles.label}>Lugar de pago <Text style={{color: "#aaa"}}>(opcional)</Text></Text>
+                                <TextInput onChangeText={(value) => setPlace(value)} style={styles.input} placeholder="Alsuper, C&A, Pagos Digitales, etc."/>
                             </View>
                         </View>
 
-                        <TouchableOpacity style={styles.button} onPress={() => addProduct({name, price, place})}>
+                        <TouchableOpacity style={styles.button} onPress={() => addService({name, price, place})}>
                             <Text style={styles.buttonText}>Agregar</Text>
                         </TouchableOpacity>
 
@@ -62,12 +61,12 @@ function AddProduct({navigation}) {
     )
 }
 
-export default AddProduct;
+export default AddService;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ECA956"
+        backgroundColor: "#63C067"
     },
     
     inputContainer: {
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
 
     button: {
         padding: "3%",
-        backgroundColor: "#E29646",
+        backgroundColor: "#5DAF5E",
         borderRadius: 10
     },
 
