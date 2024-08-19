@@ -115,18 +115,8 @@ export const ProductsProvider = ({ children }) => {
         }
     };
 
-    const confirmDeleteList = (product) => {
-        Alert.alert(
-            'Eliminar Lista',
-            `¿Estás seguro de que quieres eliminar toda la lista?`,
-            [
-                { text: 'Cancelar', style: 'cancel' },
-                { text: 'Eliminar', onPress: () => deleteList() }
-            ]
-        );
-    };
 
-    const deleteList = async () => {
+    const deleteListProducts = async () => {
         try {
             await AsyncStorage.removeItem('productList');
             setListProducts([])
@@ -150,7 +140,7 @@ export const ProductsProvider = ({ children }) => {
                 handleEditChange,
                 saveProductChanges,
                 confirmDeleteProduct,
-                confirmDeleteList
+                deleteListProducts
             }}
         >
             {children}

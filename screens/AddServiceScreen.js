@@ -11,6 +11,13 @@ function AddService({navigation}) {
     const [ price, setPrice ] = useState("");
     const [ place, setPlace ] = useState("");
 
+    const handleAddService = () => {
+        addService({name, price, place});
+        setName("");
+        setPrice("");
+        setPlace("");
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={{marginBottom: 5}}>
@@ -36,21 +43,21 @@ function AddService({navigation}) {
                         <View>
                             <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Nombre del Servicio<Text style={styles.inputRequired}>*</Text></Text>
-                                <TextInput onChangeText={(value) => setName(value)} style={styles.input} placeholder="Luz, Agua, Gas, Internet, etc."/>
+                                <TextInput value={name} onChangeText={(value) => setName(value)} style={styles.input} placeholder="Luz, Agua, Gas, Internet, etc."/>
                             </View>
 
                             <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Precio del Servicio<Text style={styles.inputRequired}>*</Text></Text>
-                                <TextInput onChangeText={(value) => setPrice(value)} vkeyboardType="numeric" style={styles.input} placeholder="150, 350, 650, etc."/>
+                                <TextInput value={price} onChangeText={(value) => setPrice(value)} vkeyboardType="numeric" style={styles.input} placeholder="150, 350, 650, etc."/>
                             </View>
 
                             <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Lugar de pago <Text style={{color: "#aaa"}}>(opcional)</Text></Text>
-                                <TextInput onChangeText={(value) => setPlace(value)} style={styles.input} placeholder="Alsuper, C&A, Pagos Digitales, etc."/>
+                                <TextInput value={place} onChangeText={(value) => setPlace(value)} style={styles.input} placeholder="Alsuper, C&A, Pagos Digitales, etc."/>
                             </View>
                         </View>
 
-                        <TouchableOpacity style={styles.button} onPress={() => addService({name, price, place})}>
+                        <TouchableOpacity style={styles.button} onPress={() => handleAddService()}>
                             <Text style={styles.buttonText}>Agregar</Text>
                         </TouchableOpacity>
 
