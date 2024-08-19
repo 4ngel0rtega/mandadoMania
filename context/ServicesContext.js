@@ -116,21 +116,10 @@ export const ServicesProvider = ({ children }) => {
         }
     };
 
-    const confirmDeleteListService = () => {
-        Alert.alert(
-            'Eliminar Lista',
-            `¿Estás seguro de que quieres eliminar toda la lista?`,
-            [
-                { text: 'Cancelar', style: 'cancel' },
-                { text: 'Eliminar', onPress: () => deleteListService() }
-            ]
-        );
-    };
-
-    const deleteListService = async () => {
+    const deleteListServices = async () => {
         try {
-            await AsyncStorage.removeItem('productList');
-            setListProducts([])
+            await AsyncStorage.removeItem('servicesList');
+            setListServices([])
         } catch (error) {
             Alert.alert("Error", "Ups! Surgio un error al eliminar la lista, intentelo nuevamente")
             console.error("Error: " + error)
@@ -151,7 +140,7 @@ export const ServicesProvider = ({ children }) => {
                 handleEditChangeService,
                 saveProductChangesService,
                 confirmDeleteService,
-                confirmDeleteListService
+                deleteListServices
             }}
         >
             {children}

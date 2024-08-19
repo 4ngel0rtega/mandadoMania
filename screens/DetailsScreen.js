@@ -44,7 +44,7 @@ function Details({navigation}) {
     }, [])
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: "#8DD941"}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: "#E9C636"}}>
             <View style={{marginBottom: 5}}>
                 <View style={{flexDirection: "row", margin: "3%", alignItems: "center"}}>
                     <TouchableOpacity onPress={() => navigation.navigate("Home")}>

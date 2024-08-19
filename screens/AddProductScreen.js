@@ -11,6 +11,13 @@ function AddProduct({navigation}) {
     const [ price, setPrice ] = useState("");
     const [ place, setPlace ] = useState("");
 
+    const handleAddProduct = () => {
+        addProduct({ name, price, place });
+        setName('');
+        setPrice('');
+        setPlace('');
+    };
+
     
     return (
         <SafeAreaView style={styles.container}>
@@ -37,21 +44,21 @@ function AddProduct({navigation}) {
                         <View>
                             <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Nombre del Producto<Text style={styles.inputRequired}>*</Text></Text>
-                                <TextInput onChangeText={(value) => setName(value)} style={styles.input} placeholder="Manzana, Naranja, Pan, etc."/>
+                                <TextInput value={name} onChangeText={(value) => setName(value)} style={styles.input} placeholder="Manzana, Naranja, Pan, etc."/>
                             </View>
 
                             <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Precio del Producto<Text style={styles.inputRequired}>*</Text></Text>
-                                <TextInput onChangeText={(value) => setPrice(value)} keyboardType="decimal-pad" style={styles.input} placeholder="20, 10, 19.55, etc."/>
+                                <TextInput value={price} onChangeText={(value) => setPrice(value)} keyboardType="decimal-pad" style={styles.input} placeholder="20, 10, 19.55, etc."/>
                             </View>
 
                             <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Lugar de compra <Text style={{color: "#aaa"}}>(opcional)</Text></Text>
-                                <TextInput onChangeText={(value) => setPlace(value)} style={styles.input} placeholder="Alsuper, Walmart, Costco, etc."/>
+                                <TextInput value={place} onChangeText={(value) => setPlace(value)} style={styles.input} placeholder="Alsuper, Walmart, Costco, etc."/>
                             </View>
                         </View>
 
-                        <TouchableOpacity style={styles.button} onPress={() => addProduct({name, price, place})}>
+                        <TouchableOpacity style={styles.button} onPress={() => handleAddProduct()}>
                             <Text style={styles.buttonText}>Agregar</Text>
                         </TouchableOpacity>
 
