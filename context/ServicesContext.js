@@ -39,6 +39,7 @@ export const ServicesProvider = ({ children }) => {
             name: name,
             price: price,
             place: place || null,
+            type: "service"
         };
 
         try {
