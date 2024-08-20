@@ -38,6 +38,7 @@ export const ProductsProvider = ({ children }) => {
             name: name,
             price: price,
             place: place || null,
+            type: "product"
         };
 
         try {
@@ -60,7 +61,7 @@ export const ProductsProvider = ({ children }) => {
     }
 
     const showModalEdit = (product) => {
-        setCurrentProduct(product);
+        // setCurrentProduct(product);
         setVisibleEdit(true);
     };
     

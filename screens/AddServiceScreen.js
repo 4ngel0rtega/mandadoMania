@@ -73,7 +73,7 @@ export default AddService;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#63C067"
+        backgroundColor: "#E9C636"
     },
     
     inputContainer: {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 
     button: {
         padding: "3%",
-        backgroundColor: "#5DAF5E",
+        backgroundColor: "#ebbe04",
         borderRadius: 10
     },
 

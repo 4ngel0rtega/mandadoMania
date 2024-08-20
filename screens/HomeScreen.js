@@ -11,10 +11,10 @@ import { ServicesContext } from "../context/ServicesContext";
 
 function Home({ navigation }) {
 
-    const [isProductListVisible, setIsProductListVisible] = useState(true);
+    const [isProductListVisible, setIsProductListVisible] = useState(false);
     const animationProductsList = useRef(new Animated.Value(1)).current;
 
-    const [isServicesListVisible, setIsServicesListVisible] = useState(true);
+    const [isServicesListVisible, setIsServicesListVisible] = useState(false);
     const animationServicesList = useRef(new Animated.Value(1)).current;
 
     const {
@@ -53,7 +53,7 @@ function Home({ navigation }) {
 
     const toggleProductListVisibility = () => {
         Animated.timing(animationProductsList, {
-            toValue: isProductListVisible ? 0 : 1,
+            toValue: !isProductListVisible ? 0 : 1,
             duration: 300,
             useNativeDriver: false,
         }).start();
@@ -62,7 +62,7 @@ function Home({ navigation }) {
 
     const toggleServicesListVisibility = () => {
         Animated.timing(animationServicesList, {
-            toValue: isServicesListVisible ? 0 : 1,
+            toValue: !isServicesListVisible ? 0 : 1,
             duration: 300,
             useNativeDriver: false,
         }).start();
@@ -137,7 +137,7 @@ function Home({ navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('AddService')}
-                    style={{ padding: 10, backgroundColor: '#63C067', borderRadius: 10 }}
+                    style={{ padding: 10, backgroundColor: '#E9C636', borderRadius: 10 }}
                 >
                     <Ionicons name="water-outline" size={30} color={"#fff"}/>
                     {/* <Text style={{ color: '#fff', fontSize: 16, textAlign: 'center' }}>Añadir Servicio</Text> */}
@@ -153,15 +153,18 @@ function Home({ navigation }) {
     
 
             <View style={{flex: 1}}>
+                <View style={{padding: 5, marginTop: 10, borderBottomWidth: 1, borderBottomColor: "#555"}}>
+                    <Text style={{fontSize: 16}}>Listas de mandado</Text>
+                </View>
 
-                <View style={{flexDirection: "row", marginHorizontal: 5, padding: 10, borderBottomWidth: 1, borderBottomColor: "#aaa"}}>
+                <View style={{flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: "#aaa"}}>
                     {isDeleteList && <Checkbox.Item color="#aa211c" status={isDeleteListProducts ? "checked" : "unchecked"} onPress={() => setIsDeleteListProducts(!isDeleteListProducts)}/>}
                     <TouchableOpacity onPress={() => toggleProductListVisibility()} style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
                         <View style={{flexDirection: "row"}}>
                         
                             <View style={{flexDirection: "row", alignItems: "center", gap: 10}}>
                                 <Ionicons name="basket" color={"#000"} size={30}/>
-                                <Text style={{fontSize: 20, fontWeight: 800}}>Productos</Text>
+                                <Text style={{fontSize: 16, fontWeight: 800}}>Productos</Text>
                             </View>
                         </View>
 
@@ -171,89 +174,89 @@ function Home({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
-            <Animated.View style={{ maxHeight: animationProductsList.interpolate({ inputRange: [0, 1], outputRange: [0, 250] }), overflow: 'hidden' }}>
-                <FlatList
-                    data={listProducts}
-                    style={{padding: "2%",}}
-                    keyExtractor={(product) => product.id.toString()} // Asegúrate de que product.id sea una cadena o número
-                    renderItem={({ item }) => {
-                        return (
-                            <View style={{padding: 5}}>
-                                <View style={{padding: 10, borderRadius: 10, backgroundColor: "#e2e2e2", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                    <View>
-                                        <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.place ? item.place : "Sin Lugar"}</Text></Text>
-                                        <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
-                                    </View>
-                                    <View style={{flexDirection: "row"}}>
-                                        <TouchableOpacity onPress={() => showModalEdit(item)} style={{backgroundColor: "#4FBCD7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
-                                            <Ionicons name="pencil" color={"#fff"} size={20}/>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity    onPress={() => confirmDeleteProduct(item)} style={{backgroundColor: "#F16767", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
-                                            <Ionicons name="close" color={"#fff"} size={20}/>
-                                        </TouchableOpacity>
+                <Animated.View style={{ maxHeight: animationProductsList.interpolate({ inputRange: [0, 1], outputRange: [250, 0] }), overflow: 'hidden' }}>
+                    <FlatList
+                        data={listProducts}
+                        style={{padding: "2%",}}
+                        keyExtractor={(product) => product.id.toString()} // Asegúrate de que product.id sea una cadena o número
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={{padding: 5}}>
+                                    <View style={{padding: 10, borderRadius: 10, backgroundColor: "#e2e2e2", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                                        <View>
+                                            <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.place ? item.place : "Sin Lugar"}</Text></Text>
+                                            <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
+                                        </View>
+                                        <View style={{flexDirection: "row"}}>
+                                            <TouchableOpacity onPress={() => showModalEdit(item)} style={{backgroundColor: "#4FBCD7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                                <Ionicons name="pencil" color={"#fff"} size={20}/>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity    onPress={() => confirmDeleteProduct(item)} style={{backgroundColor: "#F16767", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                                <Ionicons name="close" color={"#fff"} size={20}/>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                 </View>
+                            )
+                        }}
+                        ListEmptyComponent={renderEmptyListMessage} // Mostrar esto cuando listProducts esté vacío
+                        />
+                </Animated.View>
+
+                <View style={{flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: "#aaa"}}>
+                        {isDeleteList && <Checkbox.Item color="#aa211c" status={isDeleteListServices ? "checked" : "unchecked"} onPress={() => setIsDeleteListServices(!isDeleteListServices)}/>}
+                        <TouchableOpacity onPress={() => toggleServicesListVisibility()} style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
+                            <View style={{flexDirection: "row"}}>
+                            
+                                <View style={{flexDirection: "row", alignItems: "center", gap: 10}}>
+                                    <Ionicons name="bulb" color={"#000"} size={30}/>
+                                    <Text style={{fontSize: 16, fontWeight: 800}}>Servicios</Text>
+                                </View>
                             </View>
-                        )
-                    }}
-                    ListEmptyComponent={renderEmptyListMessage} // Mostrar esto cuando listProducts esté vacío
+
+                            <Animated.View style={{ transform: [{ rotate: rotateIconServices }] }}>
+                                <Ionicons name="chevron-up" color={"#000"} size={25}/>
+                            </Animated.View>
+                        </TouchableOpacity>
+                </View>
+
+                <Animated.View style={{ maxHeight: animationServicesList.interpolate({ inputRange: [0, 1], outputRange: [250, 0] }), overflow: 'hidden' }}>
+                    <FlatList
+                        data={listServices}
+                        style={{padding: "1%"}}
+                        keyExtractor={(service) => service.id.toString()} // Asegúrate de que product.id sea una cadena o número
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={{padding: 5}}>
+                                    <View style={{padding: 10, borderRadius: 10, backgroundColor: "#e2e2e2", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                                        <View>
+                                            <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.place ? item.place : "Sin Lugar"}</Text></Text>
+                                            <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
+                                        </View>
+                                        <View style={{flexDirection: "row"}}>
+                                            <TouchableOpacity onPress={() => showModalEditService(item)} style={{backgroundColor: "#4FBCD7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                                <Ionicons name="pencil" color={"#fff"} size={20}/>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity    onPress={() => confirmDeleteService(item)} style={{backgroundColor: "#F16767", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                                <Ionicons name="close" color={"#fff"} size={20}/>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </View>
+                            )
+                        }}
+                        ListEmptyComponent={renderEmptyListMessage} // Mostrar esto cuando listProducts esté vacío
                     />
-            </Animated.View>
-
-            <View style={{flexDirection: "row", marginHorizontal: 5, padding: 10, borderBottomWidth: 1, borderBottomColor: "#aaa"}}>
-                    {isDeleteList && <Checkbox.Item color="#aa211c" status={isDeleteListServices ? "checked" : "unchecked"} onPress={() => setIsDeleteListServices(!isDeleteListServices)}/>}
-                    <TouchableOpacity onPress={() => toggleServicesListVisibility()} style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
-                        <View style={{flexDirection: "row"}}>
-                        
-                            <View style={{flexDirection: "row", alignItems: "center", gap: 10}}>
-                                <Ionicons name="bulb" color={"#000"} size={30}/>
-                                <Text style={{fontSize: 20, fontWeight: 800}}>Servicios</Text>
-                            </View>
-                        </View>
-
-                        <Animated.View style={{ transform: [{ rotate: rotateIconServices }] }}>
-                            <Ionicons name="chevron-up" color={"#000"} size={25}/>
-                        </Animated.View>
-                    </TouchableOpacity>
-            </View>
-
-            <Animated.View style={{ maxHeight: animationServicesList.interpolate({ inputRange: [0, 1], outputRange: [0, 250] }), overflow: 'hidden' }}>
-                <FlatList
-                    data={listServices}
-                    style={{padding: "1%"}}
-                    keyExtractor={(service) => service.id.toString()} // Asegúrate de que product.id sea una cadena o número
-                    renderItem={({ item }) => {
-                        return (
-                            <View style={{padding: 5}}>
-                                <View style={{padding: 10, borderRadius: 10, backgroundColor: "#e2e2e2", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                    <View>
-                                        <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.place ? item.place : "Sin Lugar"}</Text></Text>
-                                        <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
-                                    </View>
-                                    <View style={{flexDirection: "row"}}>
-                                        <TouchableOpacity onPress={() => showModalEditService(item)} style={{backgroundColor: "#4FBCD7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
-                                            <Ionicons name="pencil" color={"#fff"} size={20}/>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity    onPress={() => confirmDeleteService(item)} style={{backgroundColor: "#F16767", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
-                                            <Ionicons name="close" color={"#fff"} size={20}/>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                        )
-                    }}
-                    ListEmptyComponent={renderEmptyListMessage} // Mostrar esto cuando listProducts esté vacío
-                />
-            </Animated.View>
+                </Animated.View>
             </View>
 
             { isDeleteList ? (
                     <TouchableOpacity onPress={() => confirmDeleteList()} style={{margin: 10, padding: 10, backgroundColor: "#c62620", borderRadius: 5}}>
-                        <Text style={{color: "#fff", textAlign: "center"}}>Eliminar Lista</Text>
+                        <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Eliminar Lista</Text>
                     </TouchableOpacity>
                 ) : (
-                    <TouchableOpacity onPress={() => navigation.navigate("Details")} style={{margin: 10, padding: 10, backgroundColor: "#ECCF4B", borderRadius: 5}}>
-                        <Text style={{textAlign: "center"}}>Realizar Compra</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Details")} style={{margin: 10, padding: 10, backgroundColor: "#63C067", borderRadius: 5}}>
+                        <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Realizar Compra</Text>
                     </TouchableOpacity>
                 )
             }
@@ -261,7 +264,7 @@ function Home({ navigation }) {
             <Modal visible={visibleEdit} onDismiss={hideModalEdit} onRequestClose={hideModalEdit} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{ backgroundColor: '#fff', borderRadius: 5, padding: 10, height: 410, width: 300 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-                        <Text style={{ fontSize: 22, flex: 1, textAlign: 'center' }}>Editar Producto</Text>
+                        <Text style={{ fontSize: 22, flex: 1, textAlign: 'center', fontWeight: 800}}>Editar Producto</Text>
                         <Ionicons name="close" color="#888" size={25} onPress={hideModalEdit} />
                     </View>
 
@@ -301,7 +304,7 @@ function Home({ navigation }) {
                         </View>
 
                         <TouchableOpacity onPress={() => saveProductChanges()} style={{margin: 5, padding: 10, backgroundColor: "#369cef", borderRadius: 5}}>
-                            <Text style={{color: "#fff", textAlign: "center", fontSize: 16}}>Guardar</Text>
+                            <Text style={{color: "#fff", textAlign: "center", fontSize: 16, fontWeight: 500}}>Guardar</Text>
                         </TouchableOpacity>
                         
                     </View>
@@ -311,7 +314,7 @@ function Home({ navigation }) {
             <Modal visible={visibleEditService} onDismiss={hideModalEditService} onRequestClose={hideModalEditService} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{ backgroundColor: '#fff', borderRadius: 5, padding: 10, height: 410, width: 300 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-                    <Text style={{ fontSize: 22, flex: 1, textAlign: 'center' }}>Editar Producto</Text>
+                    <Text style={{ fontSize: 22, flex: 1, textAlign: 'center' }}>Editar Servicio</Text>
                     <Ionicons name="close" color="#888" size={25} onPress={hideModalEditService} />
                     </View>
 
@@ -320,38 +323,38 @@ function Home({ navigation }) {
                     <Text style={{margin: 5, fontSize: 14, color: 666, fontWeight: 500}}>A continuación ingresa los cambios correspondientes y da click en guardar</Text>
                     <View style={{padding: 5, margin: 2}}>
                             <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Nombre del Producto</Text>
+                            <Text style={styles.label}>Nombre del Servicio</Text>
                             <TextInput
                             style={styles.input}
                             value={currentService?.name}
                             onChangeText={(value) => handleEditChangeService('name', value)}
-                            placeholder="Nombre del Producto"
+                            placeholder="Nombre del Servicio"
                             />
                             </View>
                     
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Precio del Producto</Text>
+                            <Text style={styles.label}>Precio del Servicio</Text>
                             <TextInput
                             style={styles.input}
                             value={currentService?.price}
                             onChangeText={(value) => handleEditChangeService('price', value)}
-                            placeholder="Precio del Producto"
+                            placeholder="Precio del Servicio"
                             keyboardType="numeric"
                             />
                         </View>
                     
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Lugar de compra</Text>
+                            <Text style={styles.label}>Lugar de pago</Text>
                             <TextInput
                             style={styles.input}
                             value={currentService?.place}
                             onChangeText={(value) => handleEditChangeService('place', value)}
-                            placeholder="Lugar de compra"
+                            placeholder="Lugar de pago"
                             />
                         </View>
 
                         <TouchableOpacity onPress={() => saveProductChangesService()} style={{margin: 5, padding: 10, backgroundColor: "#369cef", borderRadius: 5}}>
-                            <Text style={{color: "#fff", textAlign: "center", fontSize: 16}}>Guardar</Text>
+                            <Text style={{color: "#fff", textAlign: "center", fontSize: 16, fontWeight: 500}}>Guardar</Text>
                         </TouchableOpacity>
                         
                     </View>
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
         marginVertical: 5
     },
     label: {
-        fontSize: 16
+        fontSize: 16,
     },
     input: {
         fontSize: 14,
