@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProductsContext } from "../context/ProductsContext";
@@ -21,10 +21,14 @@ function AddProduct({navigation}) {
     
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar
+                backgroundColor={"#333333"}
+                barStyle={"light-content"}
+            />
             <View style={{marginBottom: 5}}>
                 <View style={{flexDirection: "row", margin: "3%", alignItems: "center"}}>
                     <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                        <Ionicons size={25} color={"#000"} name="arrow-back"/>
+                        <Ionicons size={25} color={"#FFF"} name="arrow-back"/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 18, textAlign: "center", width: "90%", color: "#fff"}}>Agregar Producto</Text>
                 </View>
@@ -74,7 +78,7 @@ export default AddProduct;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ECA956"
+        backgroundColor: "#F0A242"
     },
     
     inputContainer: {
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
 
     button: {
         padding: "3%",
-        backgroundColor: "#E29646",
+        backgroundColor: "#E28512",
         borderRadius: 10
     },
 

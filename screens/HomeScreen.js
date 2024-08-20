@@ -1,4 +1,4 @@
-import { Alert, Animated, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Animated, FlatList, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Navbar from "../components/navbar";
 import { useCallback, useContext, useRef, useState } from "react";
@@ -125,26 +125,30 @@ function Home({ navigation }) {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar
+                backgroundColor={"#333333"}
+                barStyle={"light-content"}
+            />
             <Navbar />
     
             <View style={{marginVertical: 10, padding: 5, flexDirection: "row", justifyContent: "space-around"}}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('AddProduct')}
-                    style={{ padding: 10, backgroundColor: '#ECA956', borderRadius: 10 }}
+                    style={{ padding: 10, backgroundColor: '#F0AB56', borderRadius: 10 }}
                 >
                     <Ionicons name="bag-add-outline" size={30} color={"#fff"}/>
                     {/* <Text style={{ color: '#fff', fontSize: 16, textAlign: 'center' }}>Añadir Producto</Text> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('AddService')}
-                    style={{ padding: 10, backgroundColor: '#E9C636', borderRadius: 10 }}
+                    style={{ padding: 10, backgroundColor: '#42D0F0', borderRadius: 10 }}
                 >
                     <Ionicons name="water-outline" size={30} color={"#fff"}/>
                     {/* <Text style={{ color: '#fff', fontSize: 16, textAlign: 'center' }}>Añadir Servicio</Text> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => setIsDeleteList(!isDeleteList)}
-                    style={{ padding: 10, backgroundColor: '#C73A35', borderRadius: 10 }}
+                    style={{ padding: 10, backgroundColor: '#DF1616', borderRadius: 10 }}
                 >
                     <Ionicons name={isDeleteList ? "trash" : "trash-outline"} size={30} color={"#fff"}/>
                     {/* <Text style={{ color: '#fff', fontSize: 16, textAlign: 'center' }}>Añadir Servicio</Text> */}
@@ -153,23 +157,23 @@ function Home({ navigation }) {
     
 
             <View style={{flex: 1}}>
-                <View style={{padding: 5, marginTop: 10, borderBottomWidth: 1, borderBottomColor: "#555"}}>
-                    <Text style={{fontSize: 16}}>Listas de mandado</Text>
+                <View style={{padding: 5, marginTop: 10}}>
+                    <Text style={{fontSize: 16, borderBottomWidth: 1, padding: 5}}>Listas de mandado</Text>
                 </View>
 
-                <View style={{flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: "#aaa"}}>
-                    {isDeleteList && <Checkbox.Item color="#aa211c" status={isDeleteListProducts ? "checked" : "unchecked"} onPress={() => setIsDeleteListProducts(!isDeleteListProducts)}/>}
+                <View style={{flexDirection: "row", margin: 5, padding: 10, borderRadius: 5, backgroundColor: "#7AB83D"}}>
+                    {isDeleteList && <Checkbox.Item color="#CC1414" status={isDeleteListProducts ? "checked" : "unchecked"} onPress={() => setIsDeleteListProducts(!isDeleteListProducts)}/>}
                     <TouchableOpacity onPress={() => toggleProductListVisibility()} style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
                         <View style={{flexDirection: "row"}}>
                         
                             <View style={{flexDirection: "row", alignItems: "center", gap: 10}}>
-                                <Ionicons name="basket" color={"#000"} size={30}/>
-                                <Text style={{fontSize: 16, fontWeight: 800}}>Productos</Text>
+                                <Ionicons name="basket" color={"#FFF"} size={30}/>
+                                <Text style={{fontSize: 16, fontWeight: 800, color: "#FFF"}}>Productos</Text>
                             </View>
                         </View>
 
                         <Animated.View style={{ transform: [{ rotate: rotateIconProducts }] }}>
-                            <Ionicons name="chevron-up" color={"#000"} size={25}/>
+                            <Ionicons name="chevron-up" color={"#FFF"} size={25}/>
                         </Animated.View>
                     </TouchableOpacity>
                 </View>
@@ -188,10 +192,10 @@ function Home({ navigation }) {
                                             <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
                                         </View>
                                         <View style={{flexDirection: "row"}}>
-                                            <TouchableOpacity onPress={() => showModalEdit(item)} style={{backgroundColor: "#4FBCD7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                            <TouchableOpacity onPress={() => showModalEdit(item)} style={{backgroundColor: "#6CD7EF", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
                                                 <Ionicons name="pencil" color={"#fff"} size={20}/>
                                             </TouchableOpacity>
-                                            <TouchableOpacity    onPress={() => confirmDeleteProduct(item)} style={{backgroundColor: "#F16767", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                            <TouchableOpacity    onPress={() => confirmDeleteProduct(item)} style={{backgroundColor: "#F06A6A", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
                                                 <Ionicons name="close" color={"#fff"} size={20}/>
                                             </TouchableOpacity>
                                         </View>
@@ -203,19 +207,19 @@ function Home({ navigation }) {
                         />
                 </Animated.View>
 
-                <View style={{flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: "#aaa"}}>
-                        {isDeleteList && <Checkbox.Item color="#aa211c" status={isDeleteListServices ? "checked" : "unchecked"} onPress={() => setIsDeleteListServices(!isDeleteListServices)}/>}
+                <View style={{flexDirection: "row", margin: 5, padding: 10, borderRadius: 5, backgroundColor: "#7AB83D"}}>
+                        {isDeleteList && <Checkbox.Item color="#CC1414" status={isDeleteListServices ? "checked" : "unchecked"} onPress={() => setIsDeleteListServices(!isDeleteListServices)}/>}
                         <TouchableOpacity onPress={() => toggleServicesListVisibility()} style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
                             <View style={{flexDirection: "row"}}>
                             
                                 <View style={{flexDirection: "row", alignItems: "center", gap: 10}}>
-                                    <Ionicons name="bulb" color={"#000"} size={30}/>
-                                    <Text style={{fontSize: 16, fontWeight: 800}}>Servicios</Text>
+                                    <Ionicons name="bulb" color={"#FFF"} size={30}/>
+                                    <Text style={{fontSize: 16, fontWeight: 800, color: "#FFF"}}>Servicios</Text>
                                 </View>
                             </View>
 
                             <Animated.View style={{ transform: [{ rotate: rotateIconServices }] }}>
-                                <Ionicons name="chevron-up" color={"#000"} size={25}/>
+                                <Ionicons name="chevron-up" color={"#FFF"} size={25}/>
                             </Animated.View>
                         </TouchableOpacity>
                 </View>
@@ -234,10 +238,10 @@ function Home({ navigation }) {
                                             <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
                                         </View>
                                         <View style={{flexDirection: "row"}}>
-                                            <TouchableOpacity onPress={() => showModalEditService(item)} style={{backgroundColor: "#4FBCD7", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                            <TouchableOpacity onPress={() => showModalEditService(item)} style={{backgroundColor: "#6CD7EF", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
                                                 <Ionicons name="pencil" color={"#fff"} size={20}/>
                                             </TouchableOpacity>
-                                            <TouchableOpacity    onPress={() => confirmDeleteService(item)} style={{backgroundColor: "#F16767", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
+                                            <TouchableOpacity    onPress={() => confirmDeleteService(item)} style={{backgroundColor: "#F06A6A", padding: 10, borderRadius: 5, marginHorizontal: 2}}>
                                                 <Ionicons name="close" color={"#fff"} size={20}/>
                                             </TouchableOpacity>
                                         </View>
@@ -251,11 +255,11 @@ function Home({ navigation }) {
             </View>
 
             { isDeleteList ? (
-                    <TouchableOpacity onPress={() => confirmDeleteList()} style={{margin: 10, padding: 10, backgroundColor: "#c62620", borderRadius: 5}}>
+                    <TouchableOpacity onPress={() => confirmDeleteList()} style={{margin: 10, padding: 10, backgroundColor: "#DF1616", borderRadius: 5}}>
                         <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Eliminar Lista</Text>
                     </TouchableOpacity>
                 ) : (
-                    <TouchableOpacity onPress={() => navigation.navigate("Details")} style={{margin: 10, padding: 10, backgroundColor: "#63C067", borderRadius: 5}}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Details")} style={{margin: 10, padding: 10, backgroundColor: "#669933", borderRadius: 5}}>
                         <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Realizar Compra</Text>
                     </TouchableOpacity>
                 )
@@ -303,7 +307,7 @@ function Home({ navigation }) {
                             />
                         </View>
 
-                        <TouchableOpacity onPress={() => saveProductChanges()} style={{margin: 5, padding: 10, backgroundColor: "#369cef", borderRadius: 5}}>
+                        <TouchableOpacity onPress={() => saveProductChanges()} style={{margin: 5, padding: 10, backgroundColor: "#16A9CA", borderRadius: 5}}>
                             <Text style={{color: "#fff", textAlign: "center", fontSize: 16, fontWeight: 500}}>Guardar</Text>
                         </TouchableOpacity>
                         
@@ -353,7 +357,7 @@ function Home({ navigation }) {
                             />
                         </View>
 
-                        <TouchableOpacity onPress={() => saveProductChangesService()} style={{margin: 5, padding: 10, backgroundColor: "#369cef", borderRadius: 5}}>
+                        <TouchableOpacity onPress={() => saveProductChangesService()} style={{margin: 5, padding: 10, backgroundColor: "#16A9CA", borderRadius: 5}}>
                             <Text style={{color: "#fff", textAlign: "center", fontSize: 16, fontWeight: 500}}>Guardar</Text>
                         </TouchableOpacity>
                         
