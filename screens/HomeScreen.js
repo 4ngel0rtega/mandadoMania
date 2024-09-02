@@ -52,6 +52,16 @@ function Home({ navigation }) {
     );
 
     const toggleProductListVisibility = () => {
+        if (!isProductListVisible) {
+            // Ocultar la lista de servicios si está visible
+            Animated.timing(animationServicesList, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: false,
+            }).start();
+            setIsServicesListVisible(false);
+        }
+    
         Animated.timing(animationProductsList, {
             toValue: !isProductListVisible ? 0 : 1,
             duration: 300,
@@ -59,8 +69,18 @@ function Home({ navigation }) {
         }).start();
         setIsProductListVisible(!isProductListVisible);
     };
-
+    
     const toggleServicesListVisibility = () => {
+        if (!isServicesListVisible) {
+            // Ocultar la lista de productos si está visible
+            Animated.timing(animationProductsList, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: false,
+            }).start();
+            setIsProductListVisible(false);
+        }
+    
         Animated.timing(animationServicesList, {
             toValue: !isServicesListVisible ? 0 : 1,
             duration: 300,
@@ -68,6 +88,7 @@ function Home({ navigation }) {
         }).start();
         setIsServicesListVisible(!isServicesListVisible);
     };
+    
 
     const rotateIconProducts = animationProductsList.interpolate({
         inputRange: [0, 1],
@@ -187,8 +208,8 @@ function Home({ navigation }) {
                             return (
                                 <View style={{padding: 5}}>
                                     <View style={{padding: 10, borderRadius: 10, backgroundColor: "#e2e2e2", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                        <View>
-                                            <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.place ? item.place : "Sin Lugar"}</Text></Text>
+                                        <View style={{width: "60%"}}>
+                                            <Text style={{fontSize: 20, fontWeight: 800}}>{item.name}<Text style={{fontSize: 14, fontWeight: 400}}> - {item.place ? item.place : "Sin Lugar"}</Text></Text>
                                             <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
                                         </View>
                                         <View style={{flexDirection: "row"}}>
@@ -233,7 +254,7 @@ function Home({ navigation }) {
                             return (
                                 <View style={{padding: 5}}>
                                     <View style={{padding: 10, borderRadius: 10, backgroundColor: "#e2e2e2", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                        <View>
+                                        <View style={{width: "60%"}}>
                                             <Text style={{fontSize: 20, fontWeight: 800}}>{item.name} - <Text style={{fontSize: 14, fontWeight: 400}}>{item.place ? item.place : "Sin Lugar"}</Text></Text>
                                             <Text style={{fontSize: 16, fontWeight: 600}}>${item.price}</Text>
                                         </View>
@@ -252,18 +273,19 @@ function Home({ navigation }) {
                         ListEmptyComponent={renderEmptyListMessage} // Mostrar esto cuando listProducts esté vacío
                     />
                 </Animated.View>
-            </View>
 
-            { isDeleteList ? (
-                    <TouchableOpacity onPress={() => confirmDeleteList()} style={{margin: 10, padding: 10, backgroundColor: "#DF1616", borderRadius: 5}}>
-                        <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Eliminar Lista</Text>
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={() => navigation.navigate("Details")} style={{margin: 10, padding: 10, backgroundColor: "#669933", borderRadius: 5}}>
-                        <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Realizar Compra</Text>
-                    </TouchableOpacity>
-                )
-            }
+                
+                { isDeleteList ? (
+                        <TouchableOpacity onPress={() => confirmDeleteList()} style={{margin: 10, padding: 10, backgroundColor: "#DF1616", borderRadius: 5}}>
+                            <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Eliminar Lista</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={() => navigation.navigate("Details")} style={{margin: 10, padding: 10, backgroundColor: "#669933", borderRadius: 5}}>
+                            <Text style={{color: "#fff", textAlign: "center", fontWeight: 500}}>Detalles de la Compra</Text>
+                        </TouchableOpacity>
+                    )
+                }
+            </View>
 
             <Modal visible={visibleEdit} onDismiss={hideModalEdit} onRequestClose={hideModalEdit} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{ backgroundColor: '#fff', borderRadius: 5, padding: 10, height: 410, width: 300 }}>
@@ -276,7 +298,7 @@ function Home({ navigation }) {
 
                     <Text style={{margin: 5, fontSize: 14, color: 666, fontWeight: 500}}>A continuación ingresa los cambios correspondientes y da click en guardar</Text>
                     <View style={{padding: 5, margin: 2}}>
-                            <View style={styles.inputContainer}>
+                        <View style={styles.inputContainer}>
                             <Text style={styles.label}>Nombre del Producto</Text>
                             <TextInput
                             style={styles.input}
@@ -284,13 +306,13 @@ function Home({ navigation }) {
                             onChangeText={(value) => handleEditChange('name', value)}
                             placeholder="Nombre del Producto"
                             />
-                            </View>
+                        </View>
                     
                         <View style={styles.inputContainer}>
                             <Text style={styles.label}>Precio del Producto</Text>
                             <TextInput
                             style={styles.input}
-                            value={currentProduct?.price}
+                            value={currentProduct?.price?.toString()}
                             onChangeText={(value) => handleEditChange('price', value)}
                             placeholder="Precio del Producto"
                             keyboardType="numeric"

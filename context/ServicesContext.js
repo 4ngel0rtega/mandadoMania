@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from 'react-native-uuid';
@@ -7,8 +7,8 @@ export const ServicesContext = createContext();
 
 export const ServicesProvider = ({ children }) => {
 
-
     const [listServices, setListServices] = useState([]);
+    const [totalServices, setTotalServices] = useState(null);
     const [loading, setLoading] = useState(false);
     const [currentService, setCurrentService] = useState(null);
     const [visibleEditService, setVisibleEditService] = useState(false);
@@ -28,6 +28,14 @@ export const ServicesProvider = ({ children }) => {
         }
     };
 
+    const getTotal = () => {
+        const cost = listServices.reduce((sum, service) => {
+            return sum + parseFloat(service.price);
+        }, 0)
+
+        setTotalServices(cost);
+    }
+
     const addService = async ({name, price, place}) => {
         if (!name || !price) {
             Alert.alert("Campos vacíos", "Por favor, completa todos los campos antes de continuar.");
@@ -37,7 +45,7 @@ export const ServicesProvider = ({ children }) => {
         const newService = {
             id: uuid.v4(),
             name: name,
-            price: price,
+            price: parseFloat(price),
             place: place || null,
             type: "service"
         };
@@ -127,10 +135,14 @@ export const ServicesProvider = ({ children }) => {
         }
     }
 
+    useEffect(() => {
+        getTotal()
+    }, [listServices])
     return (
         <ServicesContext.Provider
             value={{
                 listServices,
+                totalServices,
                 loading,
                 currentService,
                 visibleEditService,

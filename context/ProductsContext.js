@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from 'react-native-uuid';
@@ -8,6 +8,7 @@ export const ProductsContext = createContext();
 export const ProductsProvider = ({ children }) => {
 
     const [listProducts, setListProducts] = useState([]);
+    const [totalProducts, setTotalProducts] = useState(null);
     const [loading, setLoading] = useState(false);
     const [currentProduct, setCurrentProduct] = useState(null);
     const [visibleEdit, setVisibleEdit] = useState(false);
@@ -18,7 +19,6 @@ export const ProductsProvider = ({ children }) => {
             if (storedProducts !== null) {
                 const parsedProducts = JSON.parse(storedProducts);
                 setListProducts(parsedProducts);
-    
             }
         } catch (error) {
             console.error('Error loading products', error);
@@ -27,6 +27,13 @@ export const ProductsProvider = ({ children }) => {
         }
     };
 
+    const getTotal = () => {
+        const cost = listProducts.reduce((sum, product) => {
+            return sum + parseFloat(product.price);
+        }, 0)
+
+        setTotalProducts(cost);
+    }
     const addProduct = async ({name, price, place}) => {
         if (!name || !price) {
             Alert.alert("Campos vacíos", "Por favor, completa todos los campos antes de continuar.");
@@ -36,7 +43,7 @@ export const ProductsProvider = ({ children }) => {
         const newProduct = {
             id: uuid.v4(),
             name: name,
-            price: price,
+            price: parseFloat(price),
             place: place || null,
             type: "product"
         };
@@ -61,7 +68,7 @@ export const ProductsProvider = ({ children }) => {
     }
 
     const showModalEdit = (product) => {
-        // setCurrentProduct(product);
+        setCurrentProduct(product);
         setVisibleEdit(true);
     };
     
@@ -127,10 +134,15 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
+    useEffect(() => {
+        getTotal()
+    }, [listProducts])
+
     return (
         <ProductsContext.Provider
             value={{
                 listProducts,
+                totalProducts,
                 loading,
                 currentProduct,
                 visibleEdit,
