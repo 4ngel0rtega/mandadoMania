@@ -14,10 +14,12 @@ function Details({navigation}) {
 
     const {
         listProducts,
+        totalProducts,
     } = useContext(ProductsContext);
 
     const {
         listServices,
+        totalServices,
     } = useContext(ServicesContext);
 
     const renderEmptyListMessage = () => (
@@ -72,7 +74,7 @@ function Details({navigation}) {
                     renderItem={({item}) => {
                         return (
                             <View style={{paddingHorizontal: "5%", paddingVertical: "2%", borderBottomWidth: 1, borderBottomColor: "#aaa", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                <Text style={{fontSize: 18, fontWeight: 600}}>{item.name} <Text style={{fontSize: 14, fontWeight: 300, color: "#777"}}> - {item.type === 'product' ? 'Producto' : 'Servicio'}</Text></Text>
+                                <Text style={{fontSize: 18, fontWeight: 600, width: "75%"}}>{item.name} <Text style={{fontSize: 14, fontWeight: 300, color: "#777"}}> - {item.type === 'product' ? 'Producto' : 'Servicio'}</Text></Text>
 
                                 <Text style={{fontSize: 14, fontWeight: 400, color: item.type === 'product' ? '#049aeb' : '#07aba3'}}>${item.price}</Text>
                             </View>
@@ -81,11 +83,10 @@ function Details({navigation}) {
                     ListEmptyComponent={renderEmptyListMessage}
                 />
 
-                <View style={{borderTopWidth: 1, borderTopColor: "#222", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                    {/* <TouchableOpacity style={{paddingVertical: 5, paddingHorizontal: 10, backgroundColor: "#2cc131", borderRadius: 2}}>
-                        <Text style={{fontSize: 16, color: "#fff", fontWeight: 500}}>Pagar</Text>
-                    </TouchableOpacity> */}
-                    <Text style={{fontSize: 14, fontWeight: 500, margin: 10}}>Total a pagar: <Text style={{fontSize: 20, fontWeight: 800, color: "#449b47"}}>${totalPrice}</Text></Text>
+                <View style={{borderTopWidth: 1, borderTopColor: "#222"}}>
+                    <Text style={{fontSize: 14, fontWeight: 500, margin: 2}}>Productos: <Text style={{fontSize: 16, fontWeight: 600, color: "#049aeb"}}>${totalProducts}</Text></Text>
+                    <Text style={{fontSize: 14, fontWeight: 500, margin: 2}}>Servicios: <Text style={{fontSize: 16, fontWeight: 600, color: "#07aba3"}}>${totalServices}</Text></Text>
+                    <Text style={{fontSize: 14, fontWeight: 600, margin: 2}}>Total: <Text style={{fontSize: 18, fontWeight: 800, color: "#449b47"}}>${totalPrice}</Text></Text>
                 </View>
             </View>
         </SafeAreaView>
